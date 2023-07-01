@@ -28,12 +28,17 @@ def about(request: HttpRequest) -> HttpResponse:
     )
 
 def get_game(request: HttpRequest, game_id: int) -> HttpResponse:
+    template_name: str = 'games/about_game.html'
     try:
         game: Game = Game.objects.get(id=game_id)
     except Game.DoesNotExist as e:
         return HttpResponse(
             f'<h1>Игры с id {game_id} не существует!</h1>'
         )
-    return HttpResponse(
-        f'<h1>ID: {game.name}</h1>'
+    return render(
+        request=request,
+        template_name=template_name,
+        context={
+            'games': game
+        }
     )
